@@ -30,6 +30,7 @@ interface VideoSettings {
   character: {
     height: number;
     useImages: boolean;
+    imagesBasePath: string;
   };
   content: {
     topPadding: number;

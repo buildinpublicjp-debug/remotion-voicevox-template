@@ -56,8 +56,14 @@ character:
 
   # キャラクター画像を使用するか
   # false: プレースホルダー表示
-  # true: public/images/の画像を使用
+  # true: 画像を使用
   useImages: false
+
+  # キャラクター画像のベースパス
+  # public/からの相対パス、または絶対パス
+  # 例: "images" → public/images/{characterId}/
+  # 例: "/path/to/shared/characters" → 共有フォルダを参照
+  imagesBasePath: "images"
 
 # -------------------------------------------
 # コンテンツエリア設定

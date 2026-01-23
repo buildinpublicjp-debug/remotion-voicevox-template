@@ -8,6 +8,20 @@ interface CharacterProps {
   emotion?: string;
 }
 
+// 表情に応じた画像ファイル名を取得
+const getImageFileName = (emotion: string, mouthOpen: boolean): string => {
+  const state = mouthOpen ? "open" : "close";
+
+  if (emotion === "normal" || !emotion) {
+    // 通常表情: mouth_open.png, mouth_close.png
+    return `mouth_${state}.png`;
+  }
+
+  // 表情差分: {emotion}_open.png, {emotion}_close.png
+  // 例: happy_open.png, surprised_close.png
+  return `${emotion}_${state}.png`;
+};
+
 export const Character: React.FC<CharacterProps> = ({
   characterId,
   isSpeaking,
@@ -40,13 +54,13 @@ export const Character: React.FC<CharacterProps> = ({
   // 話している時のスケール（少し大きく）
   const scale = isSpeaking ? 1.02 : 1;
 
-  // 画像パスを取得
-  const currentImage = mouthOpen
-    ? characterConfig.images.mouthOpen
-    : characterConfig.images.mouthClose;
+  // 画像パスを取得（表情差分対応）
+  const basePath = SETTINGS.character.imagesBasePath;
+  const imageFileName = getImageFileName(emotion, mouthOpen);
+  const currentImage = `${basePath}/${characterId}/${imageFileName}`;
 
-  // 設定ファイルのuseImagesフラグと画像パスの存在をチェック
-  const hasImage = SETTINGS.character.useImages && characterConfig.images.mouthOpen && characterConfig.images.mouthClose;
+  // 設定ファイルのuseImagesフラグをチェック
+  const hasImage = SETTINGS.character.useImages;
 
   return (
     <div

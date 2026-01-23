@@ -20,7 +20,8 @@ export const SETTINGS = {
   },
   "character": {
     "height": 367,
-    "useImages": false
+    "useImages": false,
+    "imagesBasePath": "images"
   },
   "content": {
     "topPadding": 0,

@@ -268,6 +268,46 @@ npm install
 
 ---
 
+## キャラクター画像の構成
+
+### フォルダ構造
+```
+{imagesBasePath}/{characterId}/
+├── mouth_open.png      # 通常表情・口開き（必須）
+├── mouth_close.png     # 通常表情・口閉じ（必須）
+├── happy_open.png      # happy表情・口開き
+├── happy_close.png     # happy表情・口閉じ
+├── surprised_open.png  # surprised表情
+├── surprised_close.png
+├── thinking_open.png   # thinking表情
+├── thinking_close.png
+├── sad_open.png        # sad表情
+└── sad_close.png
+```
+
+### 表情差分の使用
+スクリプトの`emotion`フィールドで表情を指定：
+```typescript
+{
+  id: 5,
+  character: "zundamon",
+  text: "すごいのだ！",
+  emotion: "happy",  // happy_open.png / happy_close.png を使用
+  ...
+}
+```
+
+### 画像パスの設定
+`video-settings.yaml`で画像のベースパスを指定可能：
+```yaml
+character:
+  imagesBasePath: "images"  # public/images/{characterId}/
+  # または絶対パスで共有フォルダを指定
+  # imagesBasePath: "/path/to/shared/characters"
+```
+
+---
+
 ## キャラクター画像の入手
 
 公式の立ち絵素材を使用する場合：
