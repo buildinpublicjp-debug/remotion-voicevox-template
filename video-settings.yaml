@@ -12,7 +12,7 @@ font:
   family: "M PLUS Rounded 1c"
 
   # フォントサイズ（ピクセル）
-  size: 48
+  size: 70
 
   # フォントの太さ（normal, bold, 100-900）
   # 900 = エクストラボールド（黒板風に最適）
@@ -25,7 +25,7 @@ font:
   # アウトラインの色
   # "character": キャラクターごとの色（colors.zundamon / colors.metan）を使用
   # または直接色コードを指定
-  outlineColor: "#228B22"
+  outlineColor: "character"
   innerOutlineColor: "none"
 
 # -------------------------------------------
@@ -52,7 +52,7 @@ subtitle:
 character:
   # キャラクターの高さ（ピクセル）
   # コンテンツを大きく表示したい場合は小さくする
-  height: 367
+  height: 275
 
   # キャラクター画像を使用するか
   # false: プレースホルダー表示

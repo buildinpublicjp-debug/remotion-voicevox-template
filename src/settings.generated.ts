@@ -5,10 +5,10 @@
 export const SETTINGS = {
   "font": {
     "family": "M PLUS Rounded 1c",
-    "size": 48,
+    "size": 70,
     "weight": "900",
     "color": "#ffffff",
-    "outlineColor": "#228B22",
+    "outlineColor": "character",
     "innerOutlineColor": "none"
   },
   "subtitle": {
@@ -19,7 +19,7 @@ export const SETTINGS = {
     "innerOutlineWidth": 8
   },
   "character": {
-    "height": 367,
+    "height": 275,
     "useImages": true,
     "imagesBasePath": "images"
   },
@@ -41,5 +41,17 @@ export const SETTINGS = {
     "metan": "#FF1493"
   }
 } as const;
+
+// キャラクターごとの利用可能な画像ファイル
+export const AVAILABLE_IMAGES: Record<string, string[]> = {
+  "metan": [
+    "mouth_close.png",
+    "mouth_open.png"
+  ],
+  "zundamon": [
+    "mouth_close.png",
+    "mouth_open.png"
+  ]
+};
 
 export type VideoSettings = typeof SETTINGS;

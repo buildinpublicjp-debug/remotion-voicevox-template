@@ -37,12 +37,21 @@ npm install
 
 ### 3. VOICEVOXを起動
 
-VOICEVOXアプリを起動しておいてください。
+VOICEVOXアプリを起動しておいてください（音声生成に必要）。
 
-### 4. 動画を作成
+### 4. プレビューサーバーを起動
 
 ```bash
-claude  # Claude Codeを起動
+npm start
+```
+
+ブラウザで http://localhost:3000 を開くとプレビューが表示されます。
+デモ用のセリフと音声が含まれているので、すぐに動作確認できます。
+
+### 5. 動画を作成（Claude Code使用時）
+
+```bash
+claude  # 別ターミナルでClaude Codeを起動
 ```
 
 Claude Codeに話しかけるだけ：

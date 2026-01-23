@@ -88,6 +88,13 @@ export const scriptData: ScriptLine[] = [
     voiceFile: "01_zundamon.wav",
     durationInFrames: 53, // 1.45s
     pauseAfter: 15,
+    visual: {
+      type: "text",
+      text: "Remotion × VOICEVOX\nテンプレート",
+      fontSize: 80,
+      color: "#ffffff",
+      animation: "zoomIn",
+    },
   },
   {
     id: 2,

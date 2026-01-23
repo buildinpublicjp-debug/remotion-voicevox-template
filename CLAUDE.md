@@ -29,7 +29,11 @@ npm install
 
 # 2. VOICEVOXを起動
 
-# 3. Claude Codeで開く
+# 3. プレビューサーバーを起動
+npm start
+# → http://localhost:3000 でプレビュー確認
+
+# 4. Claude Codeで開く（別ターミナル）
 claude
 ```
 
@@ -151,17 +155,14 @@ public/images/
 ├── zundamon/
 │   ├── mouth_open.png      # 通常・口開き（必須）
 │   ├── mouth_close.png     # 通常・口閉じ（必須）
-│   ├── happy_open.png      # happy表情
-│   ├── happy_close.png
-│   ├── surprised_open.png  # surprised表情
-│   ├── surprised_close.png
-│   ├── thinking_open.png   # thinking表情
-│   ├── thinking_close.png
-│   ├── sad_open.png        # sad表情
-│   └── sad_close.png
+│   ├── happy_open.png      # happy表情（任意）
+│   ├── happy_close.png     # （任意）
+│   └── ...
 └── metan/
     └── （同様）
 ```
+
+**注意:** 表情差分は任意です。`npm run sync-settings`で画像フォルダをスキャンし、存在しない表情は自動的に`mouth_open/mouth_close`にフォールバックします。
 
 ### 表情の使い方
 
@@ -219,31 +220,21 @@ character:
 ```yaml
 # フォント設定
 font:
-  family: "Noto Sans JP"
-  size: 48
+  family: "M PLUS Rounded 1c"   # ポップ体
+  size: 70
   weight: "900"                 # エクストラボールド
   color: "#ffffff"              # 白文字
-  outlineColor: "#000000"       # 外側アウトライン（黒）
-  innerOutlineColor: "character" # 内側アウトライン（キャラクター色）
-
-# 字幕設定
-subtitle:
-  bottomOffset: 40
-  maxWidthPercent: 55
-  maxWidthPixels: 1000
-  outlineWidth: 14
-  innerOutlineWidth: 8
+  outlineColor: "character"     # キャラクターごとの色
 
 # キャラクター設定
 character:
-  height: 367
-  useImages: false
+  height: 275
+  useImages: true
   imagesBasePath: "images"
 
 # カラー設定（黒板風）
 colors:
   background: "#ffffff"
-  text: "#ffffff"
   zundamon: "#228B22"           # フォレストグリーン
   metan: "#FF1493"              # ディープピンク
 ```
@@ -252,8 +243,8 @@ colors:
 
 | フォント | 特徴 |
 |----------|------|
+| M PLUS Rounded 1c | 丸ゴシック、ポップ（デフォルト） |
 | Noto Sans JP | 標準的、読みやすい |
-| M PLUS Rounded 1c | 丸ゴシック、かわいい |
 | Kosugi Maru | 丸ゴシック、親しみやすい |
 
 ---
@@ -268,7 +259,7 @@ colors:
 | `npm run voices` | 音声生成（VOICEVOX起動必須） |
 | `npm run build` | 動画出力（out/video.mp4） |
 | `npm run init` | 新規プロジェクト初期化（スクリプトをリセット） |
-| `npm run sync-settings` | YAML設定を反映（通常は自動） |
+| `npm run sync-settings` | YAML設定を反映＋画像スキャン |
 
 ### 手順
 
