@@ -267,6 +267,7 @@ colors:
 | `npm start` | プレビュー（http://localhost:3000） |
 | `npm run voices` | 音声生成（VOICEVOX起動必須） |
 | `npm run build` | 動画出力（out/video.mp4） |
+| `npm run init` | 新規プロジェクト初期化（スクリプトをリセット） |
 | `npm run sync-settings` | YAML設定を反映（通常は自動） |
 
 ### 手順
@@ -323,6 +324,95 @@ Error: ECONNREFUSED
 Error: Could not find file: voices/XX_zundamon.wav
 ```
 → `npm run voices` で音声を生成
+
+---
+
+## コンテンツ表示（画像・テキスト）
+
+### 画像を表示
+
+セリフごとに`visual`フィールドで画像を指定：
+
+```typescript
+{
+  id: 3,
+  character: "zundamon",
+  text: "これがインストール画面なのだ！",
+  visual: {
+    type: "image",
+    src: "install-screen.png",  // public/content/内の画像
+    animation: "fadeIn",
+  },
+}
+```
+
+### テキストを表示
+
+```typescript
+{
+  visual: {
+    type: "text",
+    text: "ポイント1",
+    fontSize: 72,
+    color: "#ffffff",
+    animation: "bounce",
+  },
+}
+```
+
+### アニメーション
+
+| animation | 効果 |
+|-----------|------|
+| `none` | アニメーションなし |
+| `fadeIn` | フェードイン（デフォルト） |
+| `slideUp` | 下から上へスライド |
+| `slideLeft` | 右から左へスライド |
+| `zoomIn` | 拡大しながら表示 |
+| `bounce` | 弾むように表示 |
+
+---
+
+## BGM・効果音
+
+### BGM設定
+
+`src/data/script.ts`でBGMを設定：
+
+```typescript
+export const bgmConfig: BGMConfig = {
+  src: "background.mp3",  // public/bgm/内のファイル
+  volume: 0.3,
+  loop: true,
+};
+```
+
+### 効果音
+
+セリフごとに`se`フィールドで効果音を指定：
+
+```typescript
+{
+  id: 5,
+  character: "zundamon",
+  text: "ポイントはここなのだ！",
+  se: {
+    src: "chime.mp3",  // public/se/内のファイル
+    volume: 0.8,
+  },
+}
+```
+
+### フォルダ構造
+
+```
+public/
+├── bgm/           # 背景音楽
+├── se/            # 効果音
+├── content/       # コンテンツ画像
+├── images/        # キャラクター画像
+└── voices/        # 音声ファイル（自動生成）
+```
 
 ---
 

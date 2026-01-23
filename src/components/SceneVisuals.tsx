@@ -1,124 +1,129 @@
-import { interpolate } from "remotion";
+import { Img, staticFile, interpolate, spring, useVideoConfig } from "remotion";
 import { COLORS } from "../config";
-import { scenes } from "../data/script";
+import { VisualContent, AnimationType } from "../data/script";
 
 interface SceneVisualsProps {
   scene: number;
   lineId: number | null;
   frame: number;
   fps: number;
+  visual?: VisualContent;
 }
+
+// アニメーションスタイルを計算
+const useAnimationStyle = (
+  frame: number,
+  fps: number,
+  animation: AnimationType = "fadeIn"
+): React.CSSProperties => {
+  const progress = interpolate(frame, [0, fps * 0.3], [0, 1], {
+    extrapolateRight: "clamp",
+  });
+
+  const springProgress = spring({
+    frame,
+    fps,
+    config: { damping: 15, stiffness: 100 },
+  });
+
+  switch (animation) {
+    case "none":
+      return { opacity: 1 };
+
+    case "fadeIn":
+      return { opacity: progress };
+
+    case "slideUp":
+      return {
+        opacity: progress,
+        transform: `translateY(${interpolate(progress, [0, 1], [50, 0])}px)`,
+      };
+
+    case "slideLeft":
+      return {
+        opacity: progress,
+        transform: `translateX(${interpolate(progress, [0, 1], [100, 0])}px)`,
+      };
+
+    case "zoomIn":
+      return {
+        opacity: progress,
+        transform: `scale(${interpolate(progress, [0, 1], [0.8, 1])})`,
+      };
+
+    case "bounce":
+      return {
+        opacity: Math.min(1, frame / (fps * 0.1)),
+        transform: `scale(${springProgress})`,
+      };
+
+    default:
+      return { opacity: progress };
+  }
+};
 
 export const SceneVisuals: React.FC<SceneVisualsProps> = ({
   scene,
   lineId,
   frame,
   fps,
+  visual,
 }) => {
-  const sceneInfo = scenes.find((s) => s.id === scene) || scenes[0];
+  const animationStyle = useAnimationStyle(frame, fps, visual?.animation);
 
-  // 中央コンテンツ用のコンテナスタイル（黒板内に収まるよう調整）
-  const centerContainer: React.CSSProperties = {
+  // コンテンツコンテナ（黒板内に収まるよう調整）
+  const contentContainer: React.CSSProperties = {
     position: "absolute",
-    top: 60,      // 黒板上端 + 余白
-    left: 80,     // 黒板左端 + 余白
-    right: 80,    // 黒板右端 + 余白
-    bottom: 180,  // 黒板下端 + 余白
+    top: 60,
+    left: 80,
+    right: 80,
+    bottom: 180,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    ...animationStyle,
   };
 
-  switch (scene) {
-    case 1:
-      return <Scene1Visuals frame={frame} fps={fps} lineId={lineId} centerContainer={centerContainer} />;
-    case 2:
-      return <Scene2Visuals frame={frame} fps={fps} lineId={lineId} centerContainer={centerContainer} />;
-    case 3:
-      return <Scene3Visuals frame={frame} fps={fps} lineId={lineId} centerContainer={centerContainer} />;
-    default:
-      return (
-        <div style={centerContainer}>
-          <div style={{ fontSize: 64, color: COLORS.text }}>
-            {sceneInfo.title}
-          </div>
-        </div>
-      );
+  // ビジュアルがない場合はデフォルト表示
+  if (!visual || visual.type === "none") {
+    return null;
   }
-};
 
-// シーン1: オープニング
-const Scene1Visuals = ({
-  frame,
-  fps,
-  lineId,
-  centerContainer,
-}: {
-  frame: number;
-  fps: number;
-  lineId: number | null;
-  centerContainer: React.CSSProperties;
-}) => {
-  const opacity = interpolate(frame, [0, fps * 0.5], [0, 1], {
-    extrapolateRight: "clamp",
-  });
+  // 画像表示
+  if (visual.type === "image" && visual.src) {
+    return (
+      <div style={contentContainer}>
+        <Img
+          src={staticFile(`content/${visual.src}`)}
+          style={{
+            maxWidth: "100%",
+            maxHeight: "100%",
+            objectFit: "contain",
+            borderRadius: 8,
+          }}
+        />
+      </div>
+    );
+  }
 
-  return (
-    <div style={{ ...centerContainer, flexDirection: "column", gap: 20, opacity }}>
-      <div style={{ fontSize: 72, fontWeight: "bold", color: COLORS.primary }}>
-        タイトルをここに
+  // テキスト表示
+  if (visual.type === "text" && visual.text) {
+    return (
+      <div style={contentContainer}>
+        <div
+          style={{
+            fontSize: visual.fontSize || 64,
+            fontWeight: "bold",
+            color: visual.color || COLORS.text,
+            textAlign: "center",
+            lineHeight: 1.4,
+          }}
+        >
+          {visual.text}
+        </div>
       </div>
-      <div style={{ fontSize: 36, color: COLORS.textMuted }}>
-        サブタイトル
-      </div>
-    </div>
-  );
-};
+    );
+  }
 
-// シーン2: メインコンテンツ
-const Scene2Visuals = ({
-  frame,
-  fps,
-  lineId,
-  centerContainer,
-}: {
-  frame: number;
-  fps: number;
-  lineId: number | null;
-  centerContainer: React.CSSProperties;
-}) => {
-  return (
-    <div style={{ ...centerContainer, flexDirection: "column", gap: 24 }}>
-      <div style={{ fontSize: 56, fontWeight: "bold", color: COLORS.text }}>
-        メインコンテンツ
-      </div>
-      <div style={{ fontSize: 36, color: COLORS.textMuted }}>
-        ここに説明やデモを表示
-      </div>
-    </div>
-  );
-};
-
-// シーン3: エンディング
-const Scene3Visuals = ({
-  frame,
-  fps,
-  lineId,
-  centerContainer,
-}: {
-  frame: number;
-  fps: number;
-  lineId: number | null;
-  centerContainer: React.CSSProperties;
-}) => {
-  return (
-    <div style={{ ...centerContainer, flexDirection: "column", gap: 24 }}>
-      <div style={{ fontSize: 64, fontWeight: "bold", color: COLORS.success }}>
-        ありがとうございました！
-      </div>
-      <div style={{ fontSize: 36, color: COLORS.textMuted }}>
-        チャンネル登録・高評価よろしくね
-      </div>
-    </div>
-  );
+  return null;
 };

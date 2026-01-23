@@ -1,5 +1,5 @@
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, Audio, Sequence, staticFile } from "remotion";
-import { scriptData, scenes, ScriptLine } from "./data/script";
+import { AbsoluteFill, useCurrentFrame, useVideoConfig, Audio, Sequence, staticFile, Loop } from "remotion";
+import { scriptData, scenes, ScriptLine, bgmConfig } from "./data/script";
 import { COLORS, VIDEO_CONFIG } from "./config";
 import { Subtitle } from "./components/Subtitle";
 import { Character } from "./components/Character";
@@ -85,6 +85,15 @@ export const Main: React.FC = () => {
           borderRadius: "0 0 8px 8px",
         }}
       />
+      {/* BGM再生 */}
+      {bgmConfig && (
+        <Audio
+          src={staticFile(`bgm/${bgmConfig.src}`)}
+          volume={bgmConfig.volume ?? 0.3}
+          loop={bgmConfig.loop ?? true}
+        />
+      )}
+
       {/* 音声再生 */}
       {scriptData.map((line, index) => {
         const startFrame = getLineStartFrame(index);
@@ -99,6 +108,13 @@ export const Main: React.FC = () => {
               src={staticFile(`voices/${line.voiceFile}`)}
               playbackRate={VIDEO_CONFIG.playbackRate}
             />
+            {/* 効果音再生 */}
+            {line.se && (
+              <Audio
+                src={staticFile(`se/${line.se.src}`)}
+                volume={line.se.volume ?? 1}
+              />
+            )}
           </Sequence>
         );
       })}
@@ -109,6 +125,7 @@ export const Main: React.FC = () => {
         lineId={currentLine?.id ?? null}
         frame={frame}
         fps={fps}
+        visual={currentLine?.visual}
       />
 
       {/* キャラクター */}

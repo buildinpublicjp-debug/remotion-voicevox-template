@@ -7,7 +7,8 @@
     "build": "npm run sync-settings && remotion render src/index.ts Main out/video.mp4",
     "voices": "npx ts-node scripts/generate-voices.ts",
     "preview": "npm run sync-settings && remotion preview src/index.ts",
-    "sync-settings": "npx ts-node scripts/sync-settings.ts"
+    "sync-settings": "npx ts-node scripts/sync-settings.ts",
+    "init": "npx ts-node scripts/init-project.ts"
   },
   "dependencies": {
     "@remotion/bundler": "^4.0.0",

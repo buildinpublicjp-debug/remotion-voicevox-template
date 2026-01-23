@@ -147,7 +147,61 @@ durationInFrames = 音声秒数 × 30fps × 1.2playbackRate
 | `npm start` | プレビュー（http://localhost:3000） |
 | `npm run voices` | 音声一括生成 |
 | `npm run build` | 動画出力（out/video.mp4） |
+| `npm run init` | 新規プロジェクト初期化 |
 | `npm run sync-settings` | YAML設定を反映 |
+
+---
+
+## コンテンツ表示（visual）
+
+セリフごとに画像やテキストを表示：
+
+```typescript
+{
+  id: 3,
+  text: "これがインストール画面なのだ！",
+  visual: {
+    type: "image",
+    src: "install-screen.png",  // public/content/内
+    animation: "fadeIn",  // fadeIn, slideUp, slideLeft, zoomIn, bounce
+  },
+}
+```
+
+テキスト表示：
+```typescript
+{
+  visual: {
+    type: "text",
+    text: "ポイント",
+    fontSize: 72,
+    animation: "bounce",
+  },
+}
+```
+
+---
+
+## BGM・効果音
+
+BGM設定（script.ts）：
+```typescript
+export const bgmConfig: BGMConfig = {
+  src: "background.mp3",  // public/bgm/
+  volume: 0.3,
+  loop: true,
+};
+```
+
+効果音（セリフごと）：
+```typescript
+{
+  se: {
+    src: "chime.mp3",  // public/se/
+    volume: 0.8,
+  },
+}
+```
 
 ---
 

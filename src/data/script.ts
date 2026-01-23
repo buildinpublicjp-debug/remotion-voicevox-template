@@ -1,5 +1,50 @@
 import { CharacterId } from "../config";
 
+// アニメーションの型定義
+export type AnimationType = "none" | "fadeIn" | "slideUp" | "slideLeft" | "zoomIn" | "bounce";
+
+// ビジュアルの型定義
+export interface VisualContent {
+  type: "image" | "text" | "none";
+  // 画像の場合: public/content/からの相対パス（例: "screenshot.png"）
+  src?: string;
+  // テキストの場合: 表示するテキスト
+  text?: string;
+  // テキストのスタイル
+  fontSize?: number;
+  color?: string;
+  // 表示アニメーション（デフォルト: fadeIn）
+  animation?: AnimationType;
+}
+
+// 効果音の型定義
+export interface SoundEffect {
+  // public/se/からの相対パス（例: "chime.mp3"）
+  src: string;
+  // 音量（0-1）
+  volume?: number;
+}
+
+// BGM設定
+export interface BGMConfig {
+  // public/bgm/からの相対パス（例: "background.mp3"）
+  src: string;
+  // 音量（0-1）
+  volume?: number;
+  // ループするか
+  loop?: boolean;
+}
+
+// BGM設定（動画全体で使用）
+// 使用しない場合はnullまたはコメントアウト
+export const bgmConfig: BGMConfig | null = null;
+// 例:
+// export const bgmConfig: BGMConfig = {
+//   src: "background.mp3",
+//   volume: 0.3,
+//   loop: true,
+// };
+
 // セリフデータの型定義
 export interface ScriptLine {
   id: number;
@@ -11,6 +56,10 @@ export interface ScriptLine {
   durationInFrames: number; // fps * playbackRate基準
   pauseAfter: number; // セリフ後の間（フレーム数）
   emotion?: "normal" | "happy" | "surprised" | "thinking" | "sad";
+  // コンテンツエリアに表示するビジュアル
+  visual?: VisualContent;
+  // セリフ開始時に再生する効果音
+  se?: SoundEffect;
 }
 
 // シーン定義

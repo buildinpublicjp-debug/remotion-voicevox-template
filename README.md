@@ -90,6 +90,7 @@ Claude Codeに話しかけるだけ：
 | `npm start` | プレビュー（http://localhost:3000） |
 | `npm run voices` | 音声生成 |
 | `npm run build` | 動画出力（out/video.mp4） |
+| `npm run init` | 新規プロジェクト初期化 |
 
 ---
 
